@@ -1,6 +1,6 @@
 {
   "name": "update-pr-review-labels-action",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Update the labels of a PR, depending on its review status.",
   "main": "index.js",
   "repository": {
