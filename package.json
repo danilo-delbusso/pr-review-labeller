@@ -1,0 +1,21 @@
+{
+  "name": "update-pr-review-labels-action",
+  "version": "0.0.1",
+  "description": "Update the labels of a PR, depending on its review status.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danilo-delbusso/label-pr-approval-status-action.git"
+  },
+  "keywords": ["github", "action", "update", "pr", "review", "labels"],
+  "author": "Danilo Del Busso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danilo-delbusso/label-pr-approval-status-action/issues"
+  },
+  "homepage": "https://github.com/danilo-delbusso/label-pr-approval-status-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.5.0",
+    "@actions/github": "^5.0.0"
+  }
+}
