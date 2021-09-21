@@ -13,6 +13,10 @@ inputs:
     description: 'Name of the label to show when the PR needs changes'
     required: true
     default: 'needs updating'
+  updated-pr-label-name:
+    description: 'Name of the label to show when the PR has been updated'
+    required: true
+    default: 'updated'
 runs:
   using: 'node12'
   main: 'index.js'

@@ -9,8 +9,9 @@ const octokit = github.getOctokit(process.env.GITHUB_TOKEN)
 const oneApprovalLabelName = core.getInput('one-approval-label-name');
 const twoApprovalsLabelName = core.getInput('two-approvals-label-name');
 const changesRequestedLabelName = core.getInput('changes-requested-label-name');
+const updatedPrLabelName = core.getInput('updated-pr-label-name');
 
-const labelNames = [oneApprovalLabelName, twoApprovalsLabelName, changesRequestedLabelName]
+const labelNames = [oneApprovalLabelName, twoApprovalsLabelName, changesRequestedLabelName, updatedPrLabelName]
 //#endregion
 
 runAction()
@@ -22,8 +23,9 @@ async function runAction() {
     const owner = payload.repository.owner.login;
     const repo = payload.repository.name;
     const pullRequestNumber = payload.pull_request.number;
+    const action = payload.action
+    const eventName = context.eventName
 
-    console.log("Fetching existing labels and reviews for processing.")
     const [reviews, currentLabels] = await Promise.all([
         getPullRequestReviews(owner, repo, pullRequestNumber),
         getPullRequestLabels(owner, repo, pullRequestNumber)
@@ -31,7 +33,24 @@ async function runAction() {
 
     // only fetch labels that are not part of the review process
     const currentNonReviewLabels = currentLabels.map(l => l.name).filter(l => !labelNames.includes(l));
-    const reviewLabels = getLabels(reviews);
+    let currentReviewLabels = currentLabels.map(l => l.name).filter(l => labelNames.includes(l));
+    let reviewLabels = getLabels(reviews);
+    
+    // add updated if there are new commits (and remove changes requested if it's present)
+    if(eventName === "pull_request" 
+        && action === "synchronize"){
+        reviewLabels.push(updatedPrLabelName)
+        reviewLabels = reviewLabels.filter(label => label !== changesRequestedLabelName)
+    }
+
+    // if there is a new review which isn't a comment, remove updated label
+    if(eventName === "pull_request_review" 
+        && action === "submitted"
+        && !arraysAreEqual(currentReviewLabels, reviewLabels)
+        && currentReviewLabels.includes(updatedPrLabelName)
+        ){
+        currentReviewLabels = currentReviewLabels.filter(label => label !== updatedPrLabelName)
+    }
 
     //eliminate possible duplicates
     const labels = Array.from(new Set(currentNonReviewLabels.concat(reviewLabels)));
@@ -55,7 +74,6 @@ async function runAction() {
     
     console.log("Completed.")
 }
-
 
 //#region API calls
 /**
@@ -110,15 +128,31 @@ async function getPullRequestReviews(owner, repo, pullRequestNumber) {
  * Perform additional checks on the inputs of the action
  */
  function performChecks(){
-    if (labelNames.filter(l => l).length !== 3) {
+
+    const eventName = context.eventName
+    const action = context.payload.action;
+
+    if (labelNames.filter(l => l).length !== 4) {
         throw new Error(
-            "You need to specify inputs for `one-approval-label-name`, `two-approvals-label-name`, and `changes-requested-label-name`"
+            "You need to specify inputs for `one-approval-label-name`, `two-approvals-label-name`, `changes-requested-label-name`, and `updated-pr-label-name`"
         )
     }
     
-    if (context.eventName !== "pull_request_review") {
+    if (context.eventName !== "pull_request_review" && context.eventName !== "pull_request") {
         throw new Error(
-            "Make sure this Action is being triggered by a `pull_request_review` event."
+            "Make sure this Action is being triggered by a `pull_request_review` or `pull_request` event."
+        )
+    }
+
+    if(eventName === "pull_request_review" && action !== "submitted"){
+        throw new Error(
+            "`pull_request_review` events only supports `submitted` type. "
+        )
+    }
+
+    if(eventName === "pull_request" && action !== "synchronize"){
+        throw new Error(
+            "`pull_request` events only supports `synchronize` type. "
         )
     }
 }
@@ -148,7 +182,7 @@ async function getPullRequestReviews(owner, repo, pullRequestNumber) {
  */
 function getLabels(reviewsArray) {
     const reviews = getLastUserReviews(reviewsArray.filter(r => ["APPROVED", "CHANGES_REQUESTED"].includes(r.state)));
-
+    
     const approvedCount = reviews.filter(review => review.state === "APPROVED").length;
     const changesRequestedCount = reviews.filter(review => review.state === "CHANGES_REQUESTED").length;
     const labels = [];
@@ -164,4 +198,32 @@ function getLabels(reviewsArray) {
 
     return labels;
 }
+
+/**
+ * Compare two arrays. Returns true if the arrays contain the same items, in whichever order.
+ * Taken from https://stackoverflow.com/a/43478439
+ * @returns true if arrays contain the same items, in whichever other
+ */
+ function arraysAreEqual(_arr1, _arr2) {
+    if (
+      !Array.isArray(_arr1)
+      || !Array.isArray(_arr2)
+      || _arr1.length !== _arr2.length
+      ) {
+        return false;
+      }
+    
+    // .concat() to not mutate arguments
+    const arr1 = _arr1.concat().sort();
+    const arr2 = _arr2.concat().sort();
+    
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+            return false;
+         }
+    }
+    
+    return true;
+}
+
 //#endregion
