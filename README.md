@@ -2,11 +2,12 @@
 
 This action updates the labels of a PR after a review has been added.
 
-It currently supports three labels:
+It currently supports four labels:
 
 - One Approval label
 - Two Approvals label
 - Changes Requested label
+- Updated PR Label
 
 These labels have to exist in the repository already.
 
@@ -26,6 +27,10 @@ You will simply need to specify their names in the `.yml` configuration.
 
 **Required** Name of the label to show when the PR needs changes. Defaults to `needs updating`.
 
+### `updated-pr-label-name`
+
+**Required** Name of the label to show when the PR has been updated (new commits). Defaults to `updated`.
+
 ## Environment Variables
 
 ## `GITHUB_TOKEN`
@@ -36,7 +41,11 @@ The token needs to be added to the yml description in order for the action to ca
 
 ```yml
 name: Update PR Labels
-on: [pull_request_review]
+on:
+  pull_request_review:
+    types: [submitted]
+  pull_request:
+    types: [synchronize]
 
 jobs:
   update-pr-labels:
@@ -44,7 +53,7 @@ jobs:
     name: Update PR Labels
     steps:
       - name: Update Labels
-        uses: danilo-delbusso/label-pr-approval-status-action@1.0.1
+        uses: danilo-delbusso/pr-review-labeller@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -53,7 +62,11 @@ jobs:
 
 ```yml
 name: Update PR Labels
-on: [pull_request_review]
+on:
+  pull_request_review:
+    types: [submitted]
+  pull_request:
+    types: [synchronize]
 
 jobs:
   update-pr-labels:
@@ -61,11 +74,12 @@ jobs:
     name: Update PR Labels
     steps:
       - name: Update Labels
-        uses: danilo-delbusso/label-pr-approval-status-action@1.0.1
+        uses: danilo-delbusso/pr-review-labeller@v1.1.0
         with:
           one-approval-label-name: "1 approval"
           two-approvals-label-name: "2 approvals"
           changes-requested-label-name: "needs updating"
+          updated-pr-label-name: "updated"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
