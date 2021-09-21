@@ -1,25 +1,25 @@
-name: 'Update PR Status Labels'
-description: 'Update the labels of a PR, depending on its review status'
+name: "Update PR Status Labels"
+description: "Update the labels of a PR, depending on its review status"
 inputs:
   one-approval-label-name:
-    description: 'Name of the label to show when the PR has one approval'
+    description: "Name of the label to show when the PR has one approval"
     required: true
-    default: '1 approval'
+    default: "1 approval"
   two-approvals-label-name:
-    description: 'Name of the label to show when the PR has two approvals'
+    description: "Name of the label to show when the PR has two approvals"
     required: true
-    default: '2 approvals'
+    default: "2 approvals"
   changes-requested-label-name:
-    description: 'Name of the label to show when the PR needs changes'
+    description: "Name of the label to show when the PR needs changes"
     required: true
-    default: 'needs updating'
+    default: "needs updating"
   updated-pr-label-name:
-    description: 'Name of the label to show when the PR has been updated'
+    description: "Name of the label to show when the PR has been updated"
     required: true
-    default: 'updated'
+    default: "updated"
 runs:
-  using: 'node12'
-  main: 'index.js'
+  using: "node12"
+  main: "index.js"
 branding:
-  icon: 'git-pull-request'  
-  color: 'red'
+  icon: "git-pull-request"
+  color: "red"

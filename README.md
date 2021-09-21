@@ -33,6 +33,7 @@ You will simply need to specify their names in the `.yml` configuration.
 The token needs to be added to the yml description in order for the action to call GitHub's API.
 
 ## Example usage with default label names
+
 ```yml
 name: Update PR Labels
 on: [pull_request_review]
@@ -62,9 +63,9 @@ jobs:
       - name: Update Labels
         uses: danilo-delbusso/label-pr-approval-status-action@1.0.1
         with:
-          one-approval-label-name: '1 approval'
-          two-approvals-label-name: '2 approvals'
-          changes-requested-label-name: 'needs updating'
+          one-approval-label-name: "1 approval"
+          two-approvals-label-name: "2 approvals"
+          changes-requested-label-name: "needs updating"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  ```
+```
