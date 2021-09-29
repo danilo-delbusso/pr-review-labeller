@@ -213,7 +213,7 @@ function getLabels(reviewsArray) {
 
   if (approvedCount === 1) {
     labels.push(oneApprovalLabelName);
-  } else if (approvedCount === 2) {
+  } else if (approvedCount >= 2) {
     labels.push(twoApprovalsLabelName);
   }
   if (changesRequestedCount > 0) {
