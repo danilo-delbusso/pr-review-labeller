@@ -4,6 +4,8 @@ If you're using `GITHUB_TOKEN`, you'll only be able to use this action for PRs o
 
 If you're planning to support PRs opened from forks, you'll need to create an _ad-hoc_ token from the repository settings, and give it: read permissions for the PRs, and readwrite permissions for the labels.
 
+See this comment for more information: https://github.com/xenserver/xenadmin/pull/2875#issuecomment-930281214
+
 # Update PR Status Labels Action
 
 This action updates the labels of a PR after a review has been added.
