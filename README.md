@@ -2,7 +2,9 @@
  
 If you're using `GITHUB_TOKEN`, you'll only be able to use this action for PRs opened within the same repository.
 
-If you're planning to support PRs opened from forks, you'll need to create an _ad-hoc_ token from the repository settings, and give it: read permissions for the PRs, and readwrite permissions for the labels.
+If you're planning to support PRs opened from forks, you'll need to create an _ad-hoc_ token from the repository settings, and give it: read permissions for the PRs, and readwrite permissions for the labels. GitHub doesn't have this level of granularity in regards to permissions, so you'll likely give access to much more. Please read the docs carefully.
+
+Otherwise, you can enable the option to  [Send write tokens to workflows from pull requests](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#enabling-workflows-for-private-repository-forks). Howwever, this is a **high risk option**, as described in the docs.
 
 See this comment for more information: https://github.com/xenserver/xenadmin/pull/2875#issuecomment-930281214
 
