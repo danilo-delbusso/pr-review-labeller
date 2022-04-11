@@ -52,9 +52,7 @@ async function runAction() {
   }
 
   // if there is a new review which isn't a comment, remove updated label
-  if (
-    eventName === "pull_request_review" &&
-    action === "submitted" &&
+  if (action === "submitted" &&
     !arraysAreEqual(currentReviewLabels, reviewLabels) &&
     currentReviewLabels.includes(updatedPrLabelName)
   ) {
@@ -150,23 +148,16 @@ function performChecks() {
     );
   }
 
-  if (
-    context.eventName !== "pull_request_review" &&
-    context.eventName !== "pull_request"
-  ) {
+  if (context.eventName !== "pull_request_target") {
     throw new Error(
-      "Make sure this Action is being triggered by a `pull_request_review` or `pull_request` event."
+      "Make sure this Action is being triggered by a `pull_request_target` event."
     );
   }
-
-  if (eventName === "pull_request_review" && action !== "submitted") {
-    throw new Error(
-      "`pull_request_review` events only supports `submitted` type. "
+  
+  if(action !== "submitted" && action !== "synchronize"){
+      throw new Error(
+      "Only submitted and synchronize types are supported under `pull_request_target` "
     );
-  }
-
-  if (eventName === "pull_request" && action !== "synchronize") {
-    throw new Error("`pull_request` events only supports `synchronize` type. ");
   }
 }
 
