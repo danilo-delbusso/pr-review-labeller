@@ -39,6 +39,8 @@ The token needs to be added to the yml description in order for the action to ca
 
 ## Example usage with default label names
 
+You can replace `pull_request` with `pull_request_target` if you need to.
+
 ```yml
 name: Update PR Labels
 on:

@@ -44,7 +44,7 @@ async function runAction() {
   let reviewLabels = getLabels(reviews);
 
   // add updated if there are new commits (and remove changes requested if it's present)
-  if (eventName === "pull_request" && action === "synchronize") {
+  if ((eventName === "pull_request" || eventName === "pull_request_target") && action === "synchronize") {
     reviewLabels.push(updatedPrLabelName);
     reviewLabels = reviewLabels.filter(
       (label) => label !== changesRequestedLabelName
@@ -155,7 +155,7 @@ function performChecks() {
     context.eventName !== "pull_request"
   ) {
     throw new Error(
-      "Make sure this Action is being triggered by a `pull_request_review` or `pull_request` event."
+      "Make sure this Action is being triggered by a `pull_request_review` or `pull_request` event. You can also use `pull_request_target` instead of `pull_request`."
     );
   }
 
@@ -165,8 +165,8 @@ function performChecks() {
     );
   }
 
-  if (eventName === "pull_request" && action !== "synchronize") {
-    throw new Error("`pull_request` events only supports `synchronize` type. ");
+  if ((eventName === "pull_request" || eventName === "pull_request_target") && action !== "synchronize") {
+    throw new Error("`pull_request`/`pull_request_target` events only supports `synchronize` type. ");
   }
 }
 
