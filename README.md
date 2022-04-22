@@ -6,7 +6,7 @@ If you're planning to support PRs opened from forks, you can enable the option t
 
 See this comment for more information: https://github.com/xenserver/xenadmin/pull/2875#issuecomment-930281214
 
-You can also use this [workaround](https://stackoverflow.com/a/67249854), which would avoid using such sensitive permissions. See #1 for more.
+You can also use this [workaround](https://stackoverflow.com/a/67249854), which would avoid using such sensitive permissions. See https://github.com/danilo-delbusso/pr-review-labeller/issues/1 for more.
 
 # Update PR Status Labels Action
 
