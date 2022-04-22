@@ -1,6 +1,6 @@
 {
   "name": "pr-review-labeller",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Update the labels of a PR, depending on its review status.",
   "main": "index.js",
   "repository": {
