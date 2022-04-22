@@ -1,3 +1,13 @@
+ ### Attention! 🚨
+
+If you're using `GITHUB_TOKEN`, you'll only be able to use this action for PRs opened within the same repository.
+
+If you're planning to support PRs opened from forks, you can enable the option to  [Send write tokens to workflows from pull requests](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#enabling-workflows-for-private-repository-forks). However, this is a **high risk option**, as described in the docs.
+
+See this comment for more information: https://github.com/xenserver/xenadmin/pull/2875#issuecomment-930281214
+
+You can also use this [workaround](https://stackoverflow.com/a/67249854), which would avoid using such sensitive permissions. See #1 for more.
+
 # Update PR Status Labels Action
 
 This action updates the labels of a PR after a review has been added.
