@@ -65,7 +65,7 @@ jobs:
     name: Update PR Labels
     steps:
       - name: Update Labels
-        uses: danilo-delbusso/pr-review-labeller@v1.1.0
+        uses: danilo-delbusso/pr-review-labeller@v1.2.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -86,7 +86,7 @@ jobs:
     name: Update PR Labels
     steps:
       - name: Update Labels
-        uses: danilo-delbusso/pr-review-labeller@v1.1.0
+        uses: danilo-delbusso/pr-review-labeller@v1.2.3
         with:
           one-approval-label-name: "1 approval"
           two-approvals-label-name: "2 approvals"
